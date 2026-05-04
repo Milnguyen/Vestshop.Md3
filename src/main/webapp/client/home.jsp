@@ -7,7 +7,7 @@
 --%>
 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html>
@@ -19,60 +19,47 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
+            background: #fff;
         }
 
-        /* HEADER */
         .header {
-            height: 80px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 0 40px;
+            align-items: center;
+            padding: 20px 70px;
             border-bottom: 1px solid #eee;
         }
 
-        .header nav {
-            display: flex;
-            gap: 20px;
-            font-weight: bold;
-        }
-
-        .header nav a {
+        .nav a {
+            margin-right: 25px;
             text-decoration: none;
-            color: #111;
-        }
-
-        .sale {
-            color: red;
+            font-weight: bold;
+            color: black;
+            font-size: 18px;
         }
 
         .logo {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: bold;
         }
 
-        .search input {
-            padding: 10px;
-            width: 250px;
-            border: 1px solid #ddd;
-        }
-
-        /* GRID */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 40px;
-            padding: 40px;
+        .container {
+            padding: 50px 70px;
+            display: flex;
+            gap: 50px;
+            flex-wrap: wrap;
         }
 
         .product-card {
+            width: 420px;
             position: relative;
         }
 
         .product-image-wrap {
-            position: relative;
-            height: 400px;
+            width: 420px;
+            height: 500px;
             background: #f5f5f5;
+            position: relative;
             overflow: hidden;
         }
 
@@ -80,105 +67,105 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
         }
 
-        .discount {
+        .sale-badge {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 15px;
+            right: 15px;
             background: orange;
             color: white;
-            padding: 10px;
             border-radius: 50%;
-            font-size: 12px;
+            padding: 15px 12px;
+            font-size: 14px;
         }
 
-        .colors {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
+        .dots {
+            margin-top: 12px;
         }
 
-        .colors span {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
+        .dot {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
             background: gray;
+            border-radius: 50%;
+            margin-right: 12px;
         }
 
         .product-name {
-            margin-top: 10px;
+            margin-top: 12px;
+            font-size: 20px;
+            font-weight: bold;
         }
 
         .price {
+            font-size: 22px;
             font-weight: bold;
-            font-size: 18px;
         }
 
         .old-price {
-            text-decoration: line-through;
             color: gray;
-            margin-left: 5px;
+            text-decoration: line-through;
+            margin-left: 10px;
+            font-size: 20px;
         }
 
         .cart-btn {
-            position: absolute;
-            right: 0;
-            bottom: 0;
+            float: right;
+            width: 40px;
+            height: 40px;
             background: black;
             color: white;
             border: none;
-            padding: 8px;
+            cursor: pointer;
         }
     </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
 <div class="header">
-    <nav>
-        <a>NỮ</a>
-        <a>NAM</a>
-        <a class="sale">SUMMER SALE</a>
-        <a>BỘ SƯU TẬP</a>
-    </nav>
+    <div class="nav">
+        <a href="#">NỮ</a>
+        <a href="#">NAM</a>
+        <a href="#">SUMMER SALE</a>
+        <a href="#">BỘ SƯU TẬP</a>
+    </div>
 
     <div class="logo">Vest Shop</div>
-
-    <div class="search">
-        <input type="text" placeholder="Tìm kiếm...">
-    </div>
 </div>
 
-<!-- PRODUCT GRID -->
-<div class="product-grid">
+<div class="container">
 
     <c:forEach var="p" items="${products}">
         <div class="product-card">
 
             <div class="product-image-wrap">
-                <img class="product-image"
-                     src="${pageContext.request.contextPath}/assets/images/${p.image}"
-                     alt="${p.name}">
+                <a href="${pageContext.request.contextPath}/admin/products?action=detail&id=${p.id}">
+                    <img class="product-image"
+                         src="${pageContext.request.contextPath}/images/${p.image}"
+                         alt="${p.name}">
+                </a>
 
-                <span class="discount">-20%</span>
+                <div class="sale-badge">-20%</div>
             </div>
 
-            <div class="colors">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
             </div>
 
             <div class="product-name">${p.name}</div>
 
             <div>
-                <span class="price">${p.price}đ</span>
-                <span class="old-price">1.200.000đ</span>
-            </div>
+                <span class="price">${p.price} VND</span>
+                <span class="old-price">${p.price} VND</span>
 
-            <button class="cart-btn">🛍</button>
+                <button class="cart-btn">🛒</button>
+            </div>
 
         </div>
     </c:forEach>

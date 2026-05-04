@@ -6,11 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="model.Product" %>
-
-<%
-    Product product = (Product) request.getAttribute("product");
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html>
@@ -18,41 +14,103 @@
     <meta charset="UTF-8">
     <title>Chi tiết sản phẩm</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px 100px;
+            background: white;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 30px;
+            padding: 10px 18px;
+            background: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .detail-box {
+            display: flex;
+            gap: 80px;
+            align-items: flex-start;
+        }
+
+        .product-img {
+            width: 450px;
+            height: 550px;
+            object-fit: cover;
+            background: #f5f5f5;
+        }
+
+        .info h1 {
+            font-size: 36px;
+            margin-top: 0;
+        }
+
+        .info p {
+            font-size: 20px;
+            line-height: 1.8;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .not-found {
+            font-size: 22px;
+            color: red;
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="container mt-5">
+<a href="${pageContext.request.contextPath}/" class="back-btn">Quay lại</a>
 
-    <a href="<%=request.getContextPath()%>/" class="btn btn-secondary mb-3">Quay lại</a>
+<c:choose>
+    <c:when test="${not empty product}">
+        <div class="detail-box">
 
-    <% if (product != null) { %>
+            <div>
+                <img class="product-img"
+                     src="${pageContext.request.contextPath}/images/${product.image}"
+                     alt="${product.name}">
+            </div>
 
-    <div class="row">
-        <div class="col-md-5">
-            <img src="<%=request.getContextPath()%>/assets/images/<%=product.getImage()%>"
-                 class="img-fluid"
-                 alt="<%=product.getName()%>">
+            <div class="info">
+                <h1>${product.name}</h1>
+
+                <p>
+                    <span class="label">Giá:</span>
+                        ${product.price} VNĐ
+                </p>
+
+                <p>
+                    <span class="label">Số lượng:</span>
+                        ${product.quantity}
+                </p>
+
+                <p>
+                    <span class="label">Danh mục:</span>
+                        ${product.categoryName}
+                </p>
+
+                <p>
+                    <span class="label">Mô tả:</span>
+                </p>
+
+                <p>${product.description}</p>
+            </div>
+
         </div>
+    </c:when>
 
-        <div class="col-md-7">
-            <h2><%=product.getName()%></h2>
-            <p><strong>Giá:</strong> <%=String.format("%,.0f", product.getPrice())%> VNĐ</p>
-            <p><strong>Số lượng:</strong> <%=product.getQuantity()%></p>
-            <p><strong>Danh mục:</strong> <%=product.getCategoryName()%></p>
-            <p><strong>Mô tả:</strong></p>
-            <p><%=product.getDescription()%></p>
-        </div>
-    </div>
-
-    <% } else { %>
-
-    <h3>Không tìm thấy sản phẩm.</h3>
-
-    <% } %>
-
-</div>
+    <c:otherwise>
+        <p class="not-found">Không tìm thấy sản phẩm.</p>
+    </c:otherwise>
+</c:choose>
 
 </body>
 </html>
